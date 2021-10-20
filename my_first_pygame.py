@@ -50,21 +50,20 @@ class Main:
 
 		running = 1
 
-		test = 0
+		count = 0
 		
 
 		while running:
-			# if test == 10000000:
-			# 	print("bofore move in matrix")
-			# 	gameBoard.move_in_matrix(snake)
-			# 	test = 0
-			# test += 1
+			if count == 20:
+				print("bofore move in matrix")
+				gameBoard.move_in_matrix(snake, screen)
+				count = 0
+			count += 1
 
 			pressed = pygame.key.get_pressed()
 			
 			for event in pygame.event.get():
 				gameBoard.set_dir_state(pressed)
-				gameBoard.move_in_matrix(snake,screen)
 				if event.type == pygame.QUIT or pressed[pygame.K_ESCAPE]:
 			 		running = 0
 
