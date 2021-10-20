@@ -23,7 +23,6 @@ class Main:
 	# 	return (random_x_pos, random_y_pos, random_x_board_matrix, random_y_board_matrix)
 	
 
-
 	def main_loop(self, width, height):
 
 		gameBoard = GameBoard()
@@ -36,13 +35,14 @@ class Main:
 		#For now, only print the gameboard
 		gameBoard.get_board_matrix()
 
+		square_size = gameBoard.get_pixels_per_square(width, height)
 		snake = Snake(5,10)
 		snake.set_my_length(4)
 		snake_pos = snake.get_my_position()
 		snake_length = snake.get_my_length()
 		print(snake_length, snake_pos)
 		snake.init_me_in_board(snake_pos, snake_length)
-		snake.draw(screen, color.green(), [5, 10, 50, 50])
+		snake.draw(screen, color.green(), [snake_pos[0]*square_size[1], snake_pos[1]*square_size[0], square_size[0]*4, square_size[1]])
 
 		apple = Apple(1,1)
 		apple_pos = apple.get_my_position()
@@ -64,7 +64,7 @@ class Main:
 			
 			for event in pygame.event.get():
 				gameBoard.set_dir_state(pressed)
-				gameBoard.move_in_matrix(snake)
+				gameBoard.move_in_matrix(snake,screen)
 				if event.type == pygame.QUIT or pressed[pygame.K_ESCAPE]:
 			 		running = 0
 

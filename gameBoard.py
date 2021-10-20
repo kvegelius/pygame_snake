@@ -13,6 +13,8 @@ class GameBoard:
 		self.dir_state = "r"
 		self.w = 10
 		self.h = 10
+		self.pixels_per_square_width = 0
+		self.pixels_per_square_height = 0
 		#self.directionController = DirectionController()
 
 	def get_board_size(self):
@@ -33,19 +35,27 @@ class GameBoard:
 			print(x)
 		return self.board_matrix
 
-	def add_to_board(self, snake):
+	def get_pixels_per_square(self, screen_width, screen_height):
+		self.pixels_per_square_width = screen_width/self.my_width
+		self.pixels_per_square_height = screen_height/self.my_height
+		return (self.pixels_per_square_width, self.pixels_per_square_height)
+
+
+	def add_to_board(self, snake, screen):
 		snake_in_board = set(snake.get_me_in_board())
 		for i in range(len(self.board_matrix)):
 			for j in range(len(self.board_matrix[i])):
 				if self.board_matrix[i][j] == snake.get_my_part() and (j,i) not in snake_in_board:
 					self.board_matrix[i][j] = self.board_part
+					snake.draw(screen, self.color.white(), (j*self.pixels_per_square_height, i*self.pixels_per_square_width, self.pixels_per_square_height, self.pixels_per_square_height))
 				elif self.board_matrix[i][j] == self.board_part and (j,i) in snake_in_board:
 					self.board_matrix[i][j] = snake.get_my_part()
+					snake.draw(screen, self.color.green(), (j*self.pixels_per_square_height, i*self.pixels_per_square_width, self.pixels_per_square_height, self.pixels_per_square_height))
 							
 		#Print board with 
 		self.get_board_matrix()
 
-	def move_in_matrix(self, snake):
+	def move_in_matrix(self, snake, screen):
 		#This workds but I don't really understand how...
 		snake_in_board = snake.get_me_in_board()
 		index = 0
@@ -87,7 +97,7 @@ class GameBoard:
 			snake.set_me_in_board(index, new_tuple)
 			index += 1
 		print(snake.get_me_in_board())
-		self.add_to_board(snake)
+		self.add_to_board(snake, screen)
 
 	def set_dir_state(self, key):
 		if key[pygame.K_LEFT] and self.dir_state != "r":
@@ -111,9 +121,7 @@ class GameBoard:
 		
 
 
-	def get_pixels_per_square(self, screen_width, screen_height):
-		return (screen_width/self.my_width, screen_height/self.my_height)
-
+	
 	# def set_thing_on_borad(self, body_squares, position_in_matrix):
 	# 	print(body_squares, position_in_matrix)
 	# 	x = position_in_matrix[0]
