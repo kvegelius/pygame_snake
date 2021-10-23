@@ -36,13 +36,15 @@ class Main:
 		gameBoard.get_board_matrix()
 
 		square_size = gameBoard.get_pixels_per_square(width, height)
-		snake = Snake(5,10)
+		snake = Snake(17,10)
 		snake.set_my_length(4)
 		snake_pos = snake.get_my_position()
 		snake_length = snake.get_my_length()
 		print(snake_length, snake_pos)
-		snake.init_me_in_board(snake_pos, snake_length)
-		snake.draw(screen, color.green(), [snake_pos[0]*square_size[1], snake_pos[1]*square_size[0], square_size[0]*4, square_size[1]])
+		snake.init_me_in_board(snake_pos, snake_length, screen, square_size)
+		#snake_tail_pos = snake.get_me_in_board()[-1]
+		#print("snake_tail_pos " + str(snake_tail_pos))
+		#snake.draw(screen, color.green(), [snake_tail_pos[1]*square_size[1], snake_tail_pos[0]*square_size[0], square_size[0]*4, square_size[1]])
 
 		apple = Apple(1,1)
 		apple_pos = apple.get_my_position()
@@ -54,7 +56,7 @@ class Main:
 		
 
 		while running:
-			if count == 20:
+			if count == 100:
 				print("bofore move in matrix")
 				gameBoard.move_in_matrix(snake, screen)
 				count = 0

@@ -1,6 +1,8 @@
 #! /usr/bin/env python
 
-import pygame
+import pygame, colors
+
+Color = colors.Color
 
 class Thing:
 
@@ -8,6 +10,7 @@ class Thing:
 	def __init__(self, pos_x, pos_y):
 		self.my_position = (pos_x, pos_y)
 		self.my_length = 0
+		self.color = Color()
 
 	def set_my_position(self, x, y):
 		self.my_position = (x, y)

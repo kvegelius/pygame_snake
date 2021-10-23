@@ -2,9 +2,9 @@
 
 import pygame, colors, copy, directionController
 
+Color = colors.Color
 class GameBoard:
 	def __init__(self):
-		Color = colors.Color
 		self.color = Color()
 		self.board_matrix = []
 		self.my_width = 0
@@ -24,9 +24,9 @@ class GameBoard:
 		self.mid_list = []
 		self.my_width = w_range
 		self.my_height = h_range
-		for x in range(w_range-1):
+		for x in range(w_range):
 			self.mid_list.append(self.board_part)
-		for y in range(h_range-1):
+		for y in range(h_range):
 			self.board_matrix.append(copy.deepcopy(self.mid_list))
 
 
@@ -43,11 +43,13 @@ class GameBoard:
 
 	def add_to_board(self, snake, screen):
 		snake_in_board = set(snake.get_me_in_board())
+		print("snake in board in add to board " + str(snake_in_board))
 		for i in range(len(self.board_matrix)):
 			for j in range(len(self.board_matrix[i])):
 				if self.board_matrix[i][j] == snake.get_my_part() and (j,i) not in snake_in_board:
 					self.board_matrix[i][j] = self.board_part
 					snake.draw(screen, self.color.white(), (j*self.pixels_per_square_height, i*self.pixels_per_square_width, self.pixels_per_square_height, self.pixels_per_square_height))
+					print("should be white " + str(i) + " " + str(j))
 				elif self.board_matrix[i][j] == self.board_part and (j,i) in snake_in_board:
 					self.board_matrix[i][j] = snake.get_my_part()
 					snake.draw(screen, self.color.green(), (j*self.pixels_per_square_height, i*self.pixels_per_square_width, self.pixels_per_square_height, self.pixels_per_square_height))
@@ -56,7 +58,6 @@ class GameBoard:
 		self.get_board_matrix()
 
 	def move_in_matrix(self, snake, screen):
-		#This workds but I don't really understand how...
 		snake_in_board = snake.get_me_in_board()
 		index = 0
 		new_tuple = ()
@@ -68,14 +69,14 @@ class GameBoard:
 				print("is first elem: " + str(elem))
 				remember_old_pos_of_elem = elem
 				if self.dir_state == "r":
-					print(str(elem[0]+snake.get_my_length()) + " <= " + str(self.my_width+1))
-					if elem[0]+snake.get_my_length() <= self.my_width+1:
+					print(str(elem[0]) + " < " + str(self.my_width-1))
+					if elem[0] < self.my_width-1:
 						new_tuple = (elem[0] + 1, elem[1])
 					else:
 						new_tuple = (0, elem[1])
 				elif self.dir_state == "d":
-					print(str(elem[1]+snake.get_my_length()) + " <= " + str(self.my_height+1))
-					if elem[1]+snake.get_my_length() <= self.my_width+1:
+					print(str(elem[1]) + " < " + str(self.my_height-1))
+					if elem[1] < self.my_height-1:
 						new_tuple = (elem[0], elem[1]+1)
 					else:
 						new_tuple = (elem[0], 0)
@@ -84,13 +85,13 @@ class GameBoard:
 					if elem[0] > 0:
 						new_tuple = (elem[0] - 1, elem[1])
 					else:
-						new_tuple = (self.my_width-2, elem[1])
+						new_tuple = (self.my_width-1, elem[1])
 				elif self.dir_state == "u":
 					print(str(elem[1]) + " > " + str(0))
 					if elem[1] > 0:
 						new_tuple = (elem[0], elem[1]-1)
 					else:
-						new_tuple = (elem[0], self.my_height-2)
+						new_tuple = (elem[0], self.my_height-1)
 			else:
 				new_tuple = remember_old_pos_of_elem
 				remember_old_pos_of_elem = elem
