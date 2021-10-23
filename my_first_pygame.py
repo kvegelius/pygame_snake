@@ -36,7 +36,7 @@ class Main:
 		gameBoard.get_board_matrix()
 
 		square_size = gameBoard.get_pixels_per_square(width, height)
-		snake = Snake(17,10)
+		snake = Snake(4,10)
 		snake.set_my_length(4)
 		snake_pos = snake.get_my_position()
 		snake_length = snake.get_my_length()
