@@ -18,6 +18,15 @@ class Thing:
 	def get_my_position(self):
 		return self.my_position
 
+	def get_me_in_board(self):
+		print("snake in board: " + str(self.me_in_board))
+		return self.me_in_board
+
+	def set_me_in_board(self, index, elem):
+		self.me_in_board[index] = elem
+
+	def get_my_part(self):
+		return self.my_part
 
 
 

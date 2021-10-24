@@ -21,21 +21,11 @@ class Snake(Thing):
 		print(self.my_length)
 		return self.my_length
 
-	def init_me_in_board(self, pos, length, screen, square_size):
+	def init_me_in_board(self, pos, length):
 		for i in range(length):
 			self.me_in_board.append((pos[0]-i,pos[1]))
-		#self.draw(screen, self.color.green(), (self.me_in_board[-1][0]*square_size[1], pos[1]*square_size[0], length*square_size[1], square_size[0]))
 		print("what is this " + str(self.me_in_board))
 
-	def get_me_in_board(self):
-		print("snake in board: " + str(self.me_in_board))
-		return self.me_in_board
-
-	def set_me_in_board(self, index, elem):
-		self.me_in_board[index] = elem
-
-	def get_my_part(self):
-		return self.my_part
 
 	
 

@@ -25,30 +25,27 @@ class Main:
 
 	def main_loop(self, width, height):
 
-		gameBoard = GameBoard()
+		gameBoard = GameBoard(width, height)
 		gameBoard.set_board_matrix(20,20)
 
-		screen = pygame.display.set_mode((width, height))
-		color = Color()
-		screen.fill(color.white())
-		
 		#For now, only print the gameboard
 		gameBoard.get_board_matrix()
 
-		square_size = gameBoard.get_pixels_per_square(width, height)
+		color = Color()
+		
+		square_size = gameBoard.get_pixels_per_square()
 		snake = Snake(4,10)
 		snake.set_my_length(4)
 		snake_pos = snake.get_my_position()
 		snake_length = snake.get_my_length()
 		print(snake_length, snake_pos)
-		snake.init_me_in_board(snake_pos, snake_length, screen, square_size)
-		#snake_tail_pos = snake.get_me_in_board()[-1]
-		#print("snake_tail_pos " + str(snake_tail_pos))
-		#snake.draw(screen, color.green(), [snake_tail_pos[1]*square_size[1], snake_tail_pos[0]*square_size[0], square_size[0]*4, square_size[1]])
-
+		snake.init_me_in_board(snake_pos, snake_length)
+		gameBoard.add_to_board(snake, color.green())
+		
 		apple = Apple(1,1)
 		apple_pos = apple.get_my_position()
 		apple.init_me_in_board(apple_pos)
+		gameBoard.add_to_board(apple, color.red())
 
 		running = 1
 
@@ -57,8 +54,7 @@ class Main:
 
 		while running:
 			if count == 100:
-				print("bofore move in matrix")
-				gameBoard.move_in_matrix(snake, screen)
+				gameBoard.move_in_matrix(snake)
 				count = 0
 			count += 1
 
@@ -69,7 +65,7 @@ class Main:
 				if event.type == pygame.QUIT or pressed[pygame.K_ESCAPE]:
 			 		running = 0
 
-			gameBoard.paint_board(width, height, screen)
+			gameBoard.paint_board()
 			pygame.display.flip()
 
 			

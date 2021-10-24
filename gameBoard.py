@@ -4,18 +4,22 @@ import pygame, colors, copy, directionController
 
 Color = colors.Color
 class GameBoard:
-	def __init__(self):
+	def __init__(self, screen_width, screen_height):
 		self.color = Color()
 		self.board_matrix = []
 		self.my_width = 0
 		self.my_height = 0
+		self.screen_width = screen_width
+		self.screen_height = screen_height
 		self.board_part = " "
 		self.dir_state = "r"
 		self.w = 10
 		self.h = 10
 		self.pixels_per_square_width = 0
 		self.pixels_per_square_height = 0
-		#self.directionController = DirectionController()
+		
+		self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
+		self.screen.fill(self.color.white())
 
 	def get_board_size(self):
 		return (self.w, self.h)
@@ -35,29 +39,29 @@ class GameBoard:
 			print(x)
 		return self.board_matrix
 
-	def get_pixels_per_square(self, screen_width, screen_height):
-		self.pixels_per_square_width = screen_width/self.my_width
-		self.pixels_per_square_height = screen_height/self.my_height
+	def get_pixels_per_square(self):
+		self.pixels_per_square_width = self.screen_width/self.my_width
+		self.pixels_per_square_height = self.screen_height/self.my_height
 		return (self.pixels_per_square_width, self.pixels_per_square_height)
 
 
-	def add_to_board(self, snake, screen):
-		snake_in_board = set(snake.get_me_in_board())
-		print("snake in board in add to board " + str(snake_in_board))
+	def add_to_board(self, thing, color_func):
+		snake_in_board = set(thing.get_me_in_board())
+		print("thing in board in add to board " + str(snake_in_board))
 		for i in range(len(self.board_matrix)):
 			for j in range(len(self.board_matrix[i])):
-				if self.board_matrix[i][j] == snake.get_my_part() and (j,i) not in snake_in_board:
+				if self.board_matrix[i][j] == thing.get_my_part() and (j,i) not in snake_in_board:
 					self.board_matrix[i][j] = self.board_part
-					snake.draw(screen, self.color.white(), (j*self.pixels_per_square_height, i*self.pixels_per_square_width, self.pixels_per_square_height, self.pixels_per_square_height))
+					thing.draw(self.screen, self.color.white(), (j*self.pixels_per_square_height, i*self.pixels_per_square_width, self.pixels_per_square_height, self.pixels_per_square_height))
 					print("should be white " + str(i) + " " + str(j))
 				elif self.board_matrix[i][j] == self.board_part and (j,i) in snake_in_board:
-					self.board_matrix[i][j] = snake.get_my_part()
-					snake.draw(screen, self.color.green(), (j*self.pixels_per_square_height, i*self.pixels_per_square_width, self.pixels_per_square_height, self.pixels_per_square_height))
+					self.board_matrix[i][j] = thing.get_my_part()
+					thing.draw(self.screen, color_func, (j*self.pixels_per_square_height, i*self.pixels_per_square_width, self.pixels_per_square_height, self.pixels_per_square_height))
 							
 		#Print board with 
 		self.get_board_matrix()
 
-	def move_in_matrix(self, snake, screen):
+	def move_in_matrix(self, snake):
 		snake_in_board = snake.get_me_in_board()
 		index = 0
 		new_tuple = ()
@@ -98,7 +102,7 @@ class GameBoard:
 			snake.set_me_in_board(index, new_tuple)
 			index += 1
 		print(snake.get_me_in_board())
-		self.add_to_board(snake, screen)
+		self.add_to_board(snake, self.color.green())
 
 	def set_dir_state(self, key):
 		if key[pygame.K_LEFT] and self.dir_state != "r":
@@ -132,22 +136,22 @@ class GameBoard:
 
 				
 
-	def paint_board(self, screen_width, screen_height, screen):
-		pix_per_square = self.get_pixels_per_square(screen_width, screen_height)
+	def paint_board(self):
+		pix_per_square = self.get_pixels_per_square()
 
 		y_index = 1
 		for y_array in self.board_matrix:
 
 			y_start = (0, pix_per_square[1]*y_index)
-			y_end = (screen_width, pix_per_square[1]*y_index)
-			pygame.draw.line(screen, self.color.black(), y_start, y_end, 1)
+			y_end = (self.screen_width, pix_per_square[1]*y_index)
+			pygame.draw.line(self.screen, self.color.black(), y_start, y_end, 1)
 			y_index += 1
 			
 			x_index = 1
 			for x in y_array:
 				x_start = (pix_per_square[0]*x_index, 0)
-				x_end = (pix_per_square[0]*x_index, screen_height)
-				pygame.draw.line(screen, self.color.black(), x_start, x_end, 1)
+				x_end = (pix_per_square[0]*x_index, self.screen_height)
+				pygame.draw.line(self.screen, self.color.black(), x_start, x_end, 1)
 				x_index+=1
 
 
