@@ -1,6 +1,6 @@
 #! /usr/bin/env python
 
-import pygame, colors
+import pygame, colors, random
 
 Color = colors.Color
 
@@ -36,8 +36,17 @@ class Thing:
 	def draw(self, screen, color, rect):
 		pygame.draw.rect(screen, color, rect)
 
-	# def does_collide(self, item):
-	# 	return self.rect.colliderect(item.get_self())
+	def does_collide(self, item):
+	 	if self.get_me_in_board()[0] == item.get_my_position():
+	 		print("CRASCH!!!!!!")
+	 		return True
+	 		#count apple
+	 		#increase speed
 
-	# def get_self(self):
-	# 	return self.rect
+	def set_random_position(self, board_matrix, snake_in_board):
+		#remember to not put apple on snake_in_board
+	 	random_x_board_matrix = random.randint(1, len(board_matrix)-1)
+	 	random_y_board_matrix = random.randint(1, len(board_matrix[1])-1)
+	 	self.set_my_position(random_x_board_matrix, random_y_board_matrix)
+	 	print("set random position: " + str(random_x_board_matrix) + " " + str(random_y_board_matrix))
+

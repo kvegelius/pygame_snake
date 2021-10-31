@@ -11,6 +11,7 @@ class Snake(Thing):
 		self.my_length = 0
 		self.me_in_board = []
 		self.my_part = "S"
+		self.eaten_apples = 0
 
 	def set_my_length(self, length):
 		self.my_length = length
@@ -26,60 +27,19 @@ class Snake(Thing):
 			self.me_in_board.append((pos[0]-i,pos[1]))
 		print("what is this " + str(self.me_in_board))
 
+	def tail_growing(self, apple_pos):
+		self.me_in_board.append(apple_pos)
 
-	
+	def count_eaten_apples(self):
+		self.eaten_apples += 1
 
+	def get_eaten_apples(self):
+		return self. eaten_apples
 
+	def touch_my_tail(self, snake_head):
+		print("touch_my_tail: " + str(self.get_me_in_board()) + " " + str(snake_head))
+		for index in range(len(self.get_me_in_board())):
+			if index != 0:
+				if self.get_me_in_board()[index] == snake_head:
+					return True
 
-	#velocity = 1
-	#eaten_apples = 0
-	
-	
-
-	#def move(self, x, y):
-	#	self.rect.move_ip(x, y)
-	#	pass
-
-	# def handle_keys(self, key):
-	# 	v = 5
-	# 	if key[pygame.K_LEFT]:
-	# 		self.rect.move_ip(-v, 0)
-	# 		#pass
-	# 	if key[pygame.K_RIGHT]:
-	# 		self.rect.move_ip(v, 0)
-	# 		#pass
-	# 	if key[pygame.K_UP]:
-	# 		up = self.size[1]
-	# 		self.rect.move_ip(0, -v)
-	# 		#pass
-	# 	if key[pygame.K_DOWN]:
-	# 		self.rect.move_ip(0, v)
-	# 		#pass
-
-	# def set_velocity(self, acc):
-	# 	self.eaten_apples += 1
-	# 	self.velocity = self.velocity + math.pow(acc, self.eaten_apples)
-	# 	self.move_me(self.velocity)
-
-	# def get_velocity(self):
-	# 	return self.velocity
-
-	# def move_me(self, new_v):
-	# 	if new_v:
-	# 		self.velocity = new_v
-	# 	#self.rect.move_ip(self.velocity, 0)
-
-	# def put_snake_to_opposite_side(self, width, height):
-	# 	snake_width = self.rect.width 
-	# 	if self.rect.right > (width + snake_width):
-	# 		print("To the right of the screen")
-	# 		self.move(-(width+snake_width), 0)	
-	# 	elif (self.rect.left + snake_width) < 0:
-	# 		print("To the left of the screen ")
-	# 		self.move(width+snake_width, 0)
-	# 	elif self.rect.top > height:
-	# 		print("Below the screen")
-	# 		self.move(0, -height)
-	# 	elif self.rect.bottom < 0:
-	# 		print("Above the screen ")
-	# 		self.move(0, height)

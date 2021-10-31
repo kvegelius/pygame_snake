@@ -1,8 +1,10 @@
 #! /usr/bin/env python
 
-import pygame, colors, copy, directionController
+import pygame, colors, copy, directionController, apple
 
 Color = colors.Color
+Apple = apple.Apple
+
 class GameBoard:
 	def __init__(self, screen_width, screen_height):
 		self.color = Color()
@@ -20,6 +22,8 @@ class GameBoard:
 		
 		self.screen = pygame.display.set_mode((self.screen_width, self.screen_height))
 		self.screen.fill(self.color.white())
+
+		self.apple_pos = ()
 
 	def get_board_size(self):
 		return (self.w, self.h)
@@ -44,16 +48,17 @@ class GameBoard:
 		self.pixels_per_square_height = self.screen_height/self.my_height
 		return (self.pixels_per_square_width, self.pixels_per_square_height)
 
+	def fetch_apple_pos(self, pos):
+		self.apple_pos = pos
 
 	def add_to_board(self, thing, color_func):
 		snake_in_board = set(thing.get_me_in_board())
-		print("thing in board in add to board " + str(snake_in_board))
+
 		for i in range(len(self.board_matrix)):
 			for j in range(len(self.board_matrix[i])):
 				if self.board_matrix[i][j] == thing.get_my_part() and (j,i) not in snake_in_board:
 					self.board_matrix[i][j] = self.board_part
 					thing.draw(self.screen, self.color.white(), (j*self.pixels_per_square_height, i*self.pixels_per_square_width, self.pixels_per_square_height, self.pixels_per_square_height))
-					print("should be white " + str(i) + " " + str(j))
 				elif self.board_matrix[i][j] == self.board_part and (j,i) in snake_in_board:
 					self.board_matrix[i][j] = thing.get_my_part()
 					thing.draw(self.screen, color_func, (j*self.pixels_per_square_height, i*self.pixels_per_square_width, self.pixels_per_square_height, self.pixels_per_square_height))
@@ -120,20 +125,6 @@ class GameBoard:
 
 	def get_dir_state(self):
 		return self.dir_state
-
-
-
-		
-
-
-	
-	# def set_thing_on_borad(self, body_squares, position_in_matrix):
-	# 	print(body_squares, position_in_matrix)
-	# 	x = position_in_matrix[0]
-	# 	y = position_in_matrix[1]
-	# 	for i in range(0,body_squares):
-	# 		self.board_matrix[x][y-i] = "x"
-
 				
 
 	def paint_board(self):
